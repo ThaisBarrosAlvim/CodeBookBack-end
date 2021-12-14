@@ -26,7 +26,7 @@ class Comment(models.Model):
 
 class Post(models.Model):
     likes = models.IntegerField(verbose_name='Likes', default=0)
-    image = models.ImageField(verbose_name='Image')
+    image = models.ImageField(verbose_name='Image', upload_to='posts_images')
     creator = models.ForeignKey('User', on_delete=models.CASCADE)
     create_date = models.DateTimeField(verbose_name='Create Date', auto_now=True)
     language = models.ForeignKey('Language', on_delete=models.DO_NOTHING, null=True)
