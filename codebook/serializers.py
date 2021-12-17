@@ -37,11 +37,15 @@ class CommentDetailSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'image', 'creator', 'language', 'comments')
+        fields = ('id', 'image', 'creator', 'language', 'comments', 'liked')
 
     creator = UserDetailSerializer(many=False, read_only=True)
     language = LanguageDetailSerializer(many=False, read_only=True)
     comments = CommentDetailSerializer(many=True, read_only=True)
+    liked = serializers.SerializerMethodField()
+
+    def get_liked(self, obj: Post):
+        return bool(obj.users_who_likes.filter(id=self.context['user']))
 
 
 class CommentSerializer(serializers.ModelSerializer):
