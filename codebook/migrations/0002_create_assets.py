@@ -4,10 +4,11 @@ from typing import TYPE_CHECKING
 from django.db import migrations
 
 if TYPE_CHECKING:
-    from codebook.models import Language
+    from codebook.models import Language,User
 
 
 def create_languages(apps, schema_editor):
+    # Create default languages
     language_model: 'Language' = apps.get_model('codebook', 'Language')
     languages = [
         language_model(name='Python', icon='src/uploads/languages_icons/python.png'),
@@ -17,6 +18,12 @@ def create_languages(apps, schema_editor):
         language_model(name='CSS', icon='src/uploads/languages_icons/css-logo.png'),
     ]
     language_model.objects.bulk_create(languages)
+
+    # Create default User
+    user_model: 'User' = apps.get_model('codebook', 'User')
+    user = user_model(username='TestUser', email='test@test.com', password='123',
+                      profile_image='src/uploads/profile_images/default_profile_image.jpg')
+    user.save()
 
 
 class Migration(migrations.Migration):
