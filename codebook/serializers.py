@@ -37,7 +37,7 @@ class CommentDetailSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('image', 'creator', 'language', 'comments')
+        fields = ('id', 'image', 'creator', 'language', 'comments')
 
     creator = UserDetailSerializer(many=False, read_only=True)
     language = LanguageDetailSerializer(many=False, read_only=True)
