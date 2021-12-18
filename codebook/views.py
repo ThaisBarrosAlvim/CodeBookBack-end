@@ -73,17 +73,16 @@ class ClickSnip(APIView):
     permission_classes = []
 
     def post(self, request: Request) -> Response:
-        post = Post.objects.get(id=request['post_id'])
-        user = User.objects.get(id=request['user_id'])
+        post = Post.objects.get(id=request.data['post'])
+        user = User.objects.get(id=request.data['user'])
         if user not in post.users_who_snipped.all():
-            post.likes += 1
             post.users_who_snipped.add(user)
         else:
-            post.likes += 1
             post.users_who_snipped.remove(user)
         post.save()
 
-        return Response(PostSerializer(instance=post).data, status=status.HTTP_202_ACCEPTED)
+        return Response(PostDetailSerializer(instance=post, context={'request': self.request}).data,
+                        status=status.HTTP_202_ACCEPTED)
 
 
 class CreateUser(CreateAPIView):
