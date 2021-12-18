@@ -90,9 +90,53 @@ class CreateUser(CreateAPIView):
     permission_classes = []
     serializer_class = UserSerializer
 
+    def create(self, request, *args, **kwargs):
+        # Default creation
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        # Log user
+        user = User.objects.get(username=request.data['username'], password=request.data['password'])
+        user.logged = True
+        user.save()
+        User.objects.exclude(username=user.username).update(logged=False)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class GetUser(RetrieveAPIView):
     authentication_classes = []
     permission_classes = []
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+
+class Login(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request: Request) -> Response:
+        user = User.objects.filter(username=request.data['username'], password=request.data['password'])
+        if not user:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        user = user.first()
+        user.logged = True
+        user.save()
+        User.objects.exclude(username=user.username).update(logged=False)
+        return Response(status=status.HTTP_200_OK)
+
+
+class LoggedUser(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request: Request) -> Response:
+        user_qs = User.objects.filter(logged=True)
+        if not user_qs:
+            user = User.objects.first()
+            user.logged = True
+            user.save()
+        else:
+            user = user_qs.first()
+        User.objects.exclude(username=user.username).update(logged=False)
+        return Response(UserSerializer(instance=user).data, status=status.HTTP_200_OK)
