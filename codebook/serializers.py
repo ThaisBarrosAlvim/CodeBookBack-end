@@ -45,7 +45,11 @@ class PostDetailSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField()
 
     def get_liked(self, obj: Post):
-        return bool(obj.users_who_likes.filter(id=self.context['user']))
+        if self.context['request'].query_params:
+            user_id = self.context['request'].query_params['user']
+        else:
+            user_id = self.context['request'].data['user']
+        return bool(obj.users_who_likes.filter(id=user_id))
 
 
 class CommentSerializer(serializers.ModelSerializer):
