@@ -23,7 +23,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class LanguageDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
-        fields = ('icon', 'name')
+        fields = ('icon', 'name', 'id')
 
 
 class CommentDetailSerializer(serializers.ModelSerializer):
