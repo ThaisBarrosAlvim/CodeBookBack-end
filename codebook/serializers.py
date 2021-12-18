@@ -19,6 +19,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = User
         fields = ('profile_image', 'username')
 
+    profile_image = serializers.SerializerMethodField()
+
+    def get_profile_image(self, obj):
+        return User.DEFAULT_IMAGE
+
 
 class LanguageDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,3 +80,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'profile_image', 'email')
+
+    profile_image = serializers.SerializerMethodField()
+
+    def get_profile_image(self, obj):
+        return User.DEFAULT_IMAGE

@@ -21,8 +21,7 @@ def create_languages(apps, schema_editor):
 
     # Create default User
     user_model: 'User' = apps.get_model('codebook', 'User')
-    user = user_model(username='TestUser', email='test@test.com', password='123',
-                      profile_image='profile_images/default_profile_image.jpg')
+    user = user_model(username='TestUser', email='test@test.com', password='123')
     user.save()
 
 

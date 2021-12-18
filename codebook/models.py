@@ -9,6 +9,7 @@ class Language(models.Model):
 
 
 class User(models.Model):
+    DEFAULT_IMAGE = 'http://127.0.0.1:8000/uploads/profile_images/default-avatar.png'
     username = models.CharField(verbose_name='Username', max_length=255, unique=True)
     password = models.CharField(verbose_name='Password', max_length=255)
     profile_image = models.ImageField(verbose_name='Profile Image', null=True, upload_to='profile_images')
