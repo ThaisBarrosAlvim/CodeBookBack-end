@@ -11,11 +11,11 @@ def create_languages(apps, schema_editor):
     # Create default languages
     language_model: 'Language' = apps.get_model('codebook', 'Language')
     languages = [
-        language_model(name='Python', icon='src/uploads/languages_icons/python.png'),
-        language_model(name='JavaScript', icon='src/uploads/languages_icons/js-logo.png'),
-        language_model(name='Ruby', icon='src/uploads/languages_icons/ruby-logo.png'),
-        language_model(name='HTML', icon='src/uploads/languages_icons/html-logo.png'),
-        language_model(name='CSS', icon='src/uploads/languages_icons/css-logo.png'),
+        language_model(name='Python', icon='languages_icons/python.png'),
+        language_model(name='JavaScript', icon='languages_icons/js-logo.png'),
+        language_model(name='Ruby', icon='languages_icons/ruby-logo.png'),
+        language_model(name='HTML', icon='languages_icons/html-logo.png'),
+        language_model(name='CSS', icon='languages_icons/css-logo.png'),
     ]
     language_model.objects.bulk_create(languages)
 
